@@ -79,9 +79,6 @@ class Node(object):
         self.solution=[]
         self.cost=0
 
-    def __eq__(self, other):
-        return self.state == other.state and self.parent == other.parent and self.cost == other.cost
-
 def depthFirstSearch(problem):
     node = Node()
     node.state=problem.getStartState()
