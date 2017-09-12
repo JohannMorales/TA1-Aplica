@@ -108,10 +108,40 @@ def depthFirstSearch(problem):
                 frontier.push(child)
 
 
-def depthFirstSearchRandom(problem):
+def depthFirstSearchReversed(problem):
     node = Node()
     node.state=problem.getStartState()
     frontier=util.Stack()
+    frontier.push(node)
+    explored=Set([])
+
+    while True:
+        if frontier.isEmpty():
+            return []
+        node=frontier.pop()
+        if problem.isGoalState(node.state):
+            return node.solution
+
+        explored.add(node.state)
+
+        successors = problem.getSuccessors(node.state)
+        
+        for action in reversed(successors):
+            child=Node()
+            child.cost=node.cost + action[2]
+            child.solution=list(node.solution)
+            child.solution.append(action[1])
+            child.state=action[0]
+            if not (child.state) in explored:
+                frontier.push(child)
+
+def dummySearch(problem):
+    return []
+
+def breadthFirstSearch(problem):
+    node = Node()
+    node.state=problem.getStartState()
+    frontier=util.Queue()
     frontier.push(node)
     explored=Set([])
 
@@ -135,13 +165,7 @@ def depthFirstSearchRandom(problem):
             if not (child.state) in explored:
                 frontier.push(child)
 
-def dummySearch(problem):
-    return []
 
-def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -166,4 +190,4 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
-dfsR = depthFirstSearchRandom
+dfsR = depthFirstSearchReversed

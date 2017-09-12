@@ -113,3 +113,30 @@ Average Score: 436.0
 Scores:        436.0
 Win Rate:      1/1 (1.00)
 Record:        Win
+[SearchAgent] using function dfsR
+[SearchAgent] using problem type PositionSearchProblem
+Path found with total cost of 156 in 0.0 seconds
+Search nodes expanded: 271
+Pacman emerges victorious! Score: 354
+Average Score: 354.0
+Scores:        354.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+[SearchAgent] using function dfsR
+[SearchAgent] using problem type PositionSearchProblem
+Path found with total cost of 74 in 0.1 seconds
+Search nodes expanded: 274
+Pacman emerges victorious! Score: 436
+Average Score: 436.0
+Scores:        436.0
+Win Rate:      1/1 (1.00)
+Record:        Win
+[SearchAgent] using function dfs
+[SearchAgent] using problem type PositionSearchProblem
+Path found with total cost of 130 in 0.0 seconds
+Search nodes expanded: 146
+Pacman emerges victorious! Score: 380
+Average Score: 380.0
+Scores:        380.0
+Win Rate:      1/1 (1.00)
+Record:        Win
