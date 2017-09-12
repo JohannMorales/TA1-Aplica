@@ -165,8 +165,6 @@ def breadthFirstSearch(problem):
             if not (child.state) in explored:
                 frontier.push(child)
 
-
-
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
