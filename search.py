@@ -16,8 +16,9 @@
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
-
+from sets import Set
 import util
+import random
 
 class SearchProblem:
     """
@@ -72,22 +73,70 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
+class Node(object):
+    def __init__(self):
+        self.state=None
+        self.solution=[]
+        self.cost=0
+
+    def __eq__(self, other):
+        return self.state == other.state and self.parent == other.parent and self.cost == other.cost
+
 def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first.
+    node = Node()
+    node.state=problem.getStartState()
+    frontier=util.Stack()
+    frontier.push(node)
+    explored=Set([])
 
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
+    while True:
+        if frontier.isEmpty():
+            return []
+        node=frontier.pop()
+        if problem.isGoalState(node.state):
+            return node.solution
 
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
+        explored.add(node.state)
 
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+        for action in problem.getSuccessors(node.state):
+            child=Node()
+            child.cost=node.cost + action[2]
+            child.solution=list(node.solution)
+            child.solution.append(action[1])
+            child.state=action[0]
+            if not (child.state) in explored:
+                frontier.push(child)
+
+
+def depthFirstSearchRandom(problem):
+    node = Node()
+    node.state=problem.getStartState()
+    frontier=util.Stack()
+    frontier.push(node)
+    explored=Set([])
+
+    while True:
+        if frontier.isEmpty():
+            return []
+        node=frontier.pop()
+        if problem.isGoalState(node.state):
+            return node.solution
+
+        explored.add(node.state)
+
+        successors = problem.getSuccessors(node.state)
+        random.shuffle(successors)
+        for action in successors:
+            child=Node()
+            child.cost=node.cost + action[2]
+            child.solution=list(node.solution)
+            child.solution.append(action[1])
+            child.state=action[0]
+            if not (child.state) in explored:
+                frontier.push(child)
+
+def dummySearch(problem):
+    return []
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -117,3 +166,4 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+dfsR = depthFirstSearchRandom
