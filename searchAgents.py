@@ -288,12 +288,16 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        #Comentado
         #Le agrego el atributo columna
-        self.col=-1
+        #self.col=-1
         #Le agrego el atributo fila
-        self.fil=-1
+        #self.fil=-1
+        
         #Le agrego los flags de las esquinas, si valen 1 significa que la esquina fue visitada [DL,UL,DR,UR]
-        self.cornersState=[0,0,0,0]
+        
+        self.startState = (self.startingPosition, (False,False,False,False))
+        print self.startState
 
     def getStartState(self):
         """
@@ -302,19 +306,28 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         #Obtengo las coordenadas de la posicion inicial
-        columna,fila=self.startingPosition
-        self.col=columna
-        self.fil=fila
+        #columna,fila=self.startingPosition
+        return self.startState
+
+        #Comentado
+        #self.col=columna
+        #self.fil=fila
+        
         #util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        if self.cornersState[0]==1 and self.cornersState[1]==1 and self.cornersState[2]==1 and self.cornersState[3]==1:
+        if(False in state[1]):
+            return False
+        else:
             return True
-        return False
+
+        #"*** YOUR CODE HERE ***"
+        #if self.cornersState[0]==1 and self.cornersState[1]==1 and self.cornersState[2]==1 and self.cornersState[3]==1:
+        #    return True
+        #return False
         #util.raiseNotDefined()        
 
     def getSuccessors(self, state):
@@ -338,23 +351,32 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"            
-            col,fil=state
+            col,fil=state[0]
             colAux,filAux=Actions.directionToVector(action)
-            nuevaCol,nuevaFil=int(col+colAux),int(fil+filAux)
+            nuevaCol =int(col+colAux)
+            nuevaFil =int(fil+filAux)
             #Si no hay un muro en la nueva posicion/estado sucesor
             if not self.walls[nuevaCol][nuevaFil]:
-                siguienteEstado=(nuevaCol,nuevaFil)
-                costo=self.costFn(siguienteEstado)
+                newPosition = (nuevaCol, nuevaFil)
+                newCorners = list(state[1])
+
+                for i in range(4):
+                    if newPosition == self.corners[i]:
+                        newCorners[i] = True
+
+                siguienteEstado=(newPosition, newCorners)
+                #costo=self.costFn(siguienteEstado)
+                costo = 1
                 #Se agrega una tripleta
                 successors.append((siguienteEstado,action,costo))
 
         # Bookkeeping for display purposes
         self._expanded += 1 # DO NOT CHANGE
         #Si las coordenadas que tiene state no esta en self._visited el cual es {} osea un diccionario vacio
-        if state not in self._visited:
+        #if state not in self._visited:
             #Agrega las coordenadas que tiene state y ponles el valor de True
-            self._visited[state] = True
-            self._visitedlist.append(state)
+        #    self._visited[state] = True
+        #    self._visitedlist.append(state)
 
         return successors
 

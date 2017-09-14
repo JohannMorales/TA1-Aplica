@@ -84,7 +84,7 @@ def depthFirstSearch(problem):
     node.state=problem.getStartState()
     frontier=util.Stack()
     frontier.push(node)
-    explored=Set([])
+    explored=[]
 
     while True:
         if frontier.isEmpty():
@@ -93,7 +93,7 @@ def depthFirstSearch(problem):
         if problem.isGoalState(node.state):
             return node.solution
 
-        explored.add(node.state)
+        explored.append(node.state)
 
         for action in problem.getSuccessors(node.state):
             child=Node()
@@ -140,7 +140,7 @@ def breadthFirstSearch(problem):
     node.state=problem.getStartState()
     frontier=util.Queue()
     frontier.push(node)
-    explored=Set([])
+    explored=[]
 
     while True:
         if frontier.isEmpty():
@@ -149,7 +149,7 @@ def breadthFirstSearch(problem):
         if problem.isGoalState(node.state):
             return node.solution
 
-        explored.add(node.state)
+        explored.append(node.state)
 
         successors = problem.getSuccessors(node.state)
         random.shuffle(successors)
