@@ -297,7 +297,6 @@ class CornersProblem(search.SearchProblem):
         #Le agrego los flags de las esquinas, si valen 1 significa que la esquina fue visitada [DL,UL,DR,UR]
         
         self.startState = (self.startingPosition, (False,False,False,False))
-        print self.startState
 
     def getStartState(self):
         """
