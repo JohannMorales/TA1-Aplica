@@ -295,8 +295,9 @@ class CornersProblem(search.SearchProblem):
         #self.fil=-1
         
         #Le agrego los flags de las esquinas, si valen 1 significa que la esquina fue visitada [DL,UL,DR,UR]
-        
-        self.startState = (self.startingPosition, (False,False,False,False))
+        corner_state = (False, False, False, False);
+        self.startState = (self.startingPosition, corner_state)
+        # self.startState = (self.startingPosition, (False,False,False,False))
 
     def getStartState(self):
         """
@@ -358,12 +359,12 @@ class CornersProblem(search.SearchProblem):
             if not self.walls[nuevaCol][nuevaFil]:
                 newPosition = (nuevaCol, nuevaFil)
                 newCorners = list(state[1])
+                if newPosition in self.corners:
+                    index = self.corners.index(newPosition)
+                    newCorners[index] = True
 
-                for i in range(4):
-                    if newPosition == self.corners[i]:
-                        newCorners[i] = True
 
-                siguienteEstado=(newPosition, newCorners)
+                siguienteEstado=(newPosition, tuple(newCorners))
                 #costo=self.costFn(siguienteEstado)
                 costo = 1
                 #Se agrega una tripleta

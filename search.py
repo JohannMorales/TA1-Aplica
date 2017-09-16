@@ -109,26 +109,31 @@ def breadthFirstSearch(problem):
     node.state=problem.getStartState()
     frontier=util.Queue()
     frontier.push(node)
-    explored=[]
-
+    explored=set()
     while True:
         if frontier.isEmpty():
             return []
+
         node=frontier.pop()
+
+        if node.state in explored: ## Esta y la de abjo son las lineas q hacen q pacman sea inteligente en 1 segundo
+            continue
+
         if problem.isGoalState(node.state):
             return node.solution
 
-        explored.append(node.state)
+        explored.add(node.state)
 
         successors = problem.getSuccessors(node.state)
 
         for action in successors:
-            child=Node()
-            child.cost=node.cost + action[2]
-            child.solution=list(node.solution)
-            child.solution.append(action[1])
-            child.state=action[0]
-            if not (child.state) in explored and not child in frontier.list:
+
+            if not action[0] in explored:
+                child=Node()
+                child.cost=node.cost + action[2]
+                child.solution=list(node.solution)
+                child.solution.append(action[1])
+                child.state=tuple(action[0])
                 frontier.push(child)
 
 def uniformCostSearch(problem):
