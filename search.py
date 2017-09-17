@@ -102,7 +102,7 @@ def depthFirstSearch(problem):
             return []
 
         node = frontier.pop()
-        if(nodo.state) in explored:
+        if node.state in explored:
             continue
         if problem.isGoalState(node.state):
             return node.solution
