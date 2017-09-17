@@ -79,29 +79,40 @@ class Node(object):
         self.solution=[]
         self.cost=0
 
+    def create_child(self, state, addSolution, addCost):
+        child = Node()
+        child.state = tuple(state)
+        child.solution = list(self.solution)
+        child.solution.append(addSolution)
+        child.cost = self.cost + addCost
+        return child
+
+   
 def depthFirstSearch(problem):
     node = Node()
     node.state=problem.getStartState()
     frontier=util.Stack()
     frontier.push(node)
-    explored=[]
+    explored=set()
 
     while True:
+
         if frontier.isEmpty():
+            print "No hay solucion"
             return []
-        node=frontier.pop()
+
+        node = frontier.pop()
+        if(nodo.state) in explored:
+            continue
         if problem.isGoalState(node.state):
             return node.solution
 
-        explored.append(node.state)
+        explored.add(node.state)
 
         for action in problem.getSuccessors(node.state):
-            child=Node()
-            child.cost=node.cost + action[2]
-            child.solution=list(node.solution)
-            child.solution.append(action[1])
-            child.state=action[0]
-            if not (child.state) in explored:
+            child = node.create_child(action[0], action[1], action[2])
+
+            if not child.state in explored:
                 frontier.push(child)
 
 def breadthFirstSearch(problem):
@@ -111,29 +122,28 @@ def breadthFirstSearch(problem):
     frontier.push(node)
     explored=set()
     while True:
+
         if frontier.isEmpty():
+            print "No hay solucion"
             return []
 
         node=frontier.pop()
 
-        if node.state in explored: ## Esta y la de abjo son las lineas q hacen q pacman sea inteligente en 1 segundo
-            continue
-
-        if problem.isGoalState(node.state):
-            return node.solution
+        # Debido a que no se puede checkear la frontera al momento de insertar el nodo
+        # se debe checkear en este punto si el estado del nodo sacado ya ha sido 
+        # explorado o no 
+        if node.state in explored:
+           continue
 
         explored.add(node.state)
 
-        successors = problem.getSuccessors(node.state)
+        for action in problem.getSuccessors(node.state):
+            child = node.create_child(action[0], action[1], action[2])
 
-        for action in successors:
-
-            if not action[0] in explored:
-                child=Node()
-                child.cost=node.cost + action[2]
-                child.solution=list(node.solution)
-                child.solution.append(action[1])
-                child.state=tuple(action[0])
+            # La clase Queue que se da no tiene una funcion para checkear si ya hay un elemento en ella
+            if not child.state in explored:
+                if problem.isGoalState(child.state):
+                    return child.solution
                 frontier.push(child)
 
 def uniformCostSearch(problem):

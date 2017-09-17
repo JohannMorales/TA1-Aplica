@@ -285,35 +285,29 @@ class CornersProblem(search.SearchProblem):
             if not startingGameState.hasFood(*corner):
                 print 'Warning: no food in corner ' + str(corner)
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
-        # Please add any code here which you would like to use
-        # in initializing the problem
-        "*** YOUR CODE HERE ***"
-        #Comentado
-        #Le agrego el atributo columna
-        #self.col=-1
-        #Le agrego el atributo fila
-        #self.fil=-1
         
+        # El nuevo estado sera (posicion, estado de esquinas)
         #Le agrego los flags de las esquinas, si valen 1 significa que la esquina fue visitada [DL,UL,DR,UR]
         corner_state = (False, False, False, False);
+        
+        #Verifico que no haya empezado en una esquina
+        x = self.startingPosition
+        y = self.startingPosition
+
+        if (x,y)==(1,1): corner_state[0]=True
+        elif (x,y)==(1,top): corner_state[1]=True
+        elif (x,y)==(right,1): corner_state[2]=True
+        elif (x,y)==(right,top): corner_state[3]=True
+
         self.startState = (self.startingPosition, corner_state)
-        # self.startState = (self.startingPosition, (False,False,False,False))
 
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        #Obtengo las coordenadas de la posicion inicial
-        #columna,fila=self.startingPosition
         return self.startState
 
-        #Comentado
-        #self.col=columna
-        #self.fil=fila
-        
-        #util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
@@ -324,11 +318,6 @@ class CornersProblem(search.SearchProblem):
         else:
             return True
 
-        #"*** YOUR CODE HERE ***"
-        #if self.cornersState[0]==1 and self.cornersState[1]==1 and self.cornersState[2]==1 and self.cornersState[3]==1:
-        #    return True
-        #return False
-        #util.raiseNotDefined()        
 
     def getSuccessors(self, state):
         """
@@ -342,6 +331,7 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -350,23 +340,24 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"            
             col,fil=state[0]
             colAux,filAux=Actions.directionToVector(action)
             nuevaCol =int(col+colAux)
             nuevaFil =int(fil+filAux)
+
             #Si no hay un muro en la nueva posicion/estado sucesor
             if not self.walls[nuevaCol][nuevaFil]:
+
                 newPosition = (nuevaCol, nuevaFil)
                 newCorners = list(state[1])
+
                 if newPosition in self.corners:
                     index = self.corners.index(newPosition)
                     newCorners[index] = True
 
-
                 siguienteEstado=(newPosition, tuple(newCorners))
-                #costo=self.costFn(siguienteEstado)
                 costo = 1
+
                 #Se agrega una tripleta
                 successors.append((siguienteEstado,action,costo))
 
@@ -379,6 +370,7 @@ class CornersProblem(search.SearchProblem):
         #    self._visitedlist.append(state)
 
         return successors
+
 
     def getCostOfActions(self, actions):
         """
