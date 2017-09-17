@@ -17,9 +17,20 @@ class Node(object):
 
 ### Estrategias de Busqueda 
 
+# Resultados experimentales 
+
+## Medium Corners 
+
+||BFS|DFS|A\*|Algoritmo Genetico|
+|-|-|-|
+|Nodos expandidos|1|2|||
+|Costo de solucion|1|2|||
+
+## Big Corners 
+
 ||# Nodos expandidos|Costo de solucion|
 |-|-|-|
-|dfs|1|2|
-|dfs|1|2|
+|Depth first search|1|2|
+|Breadth firsst search|1|2|
 
 Fuente: http://ai.berkeley.edu/search.html
