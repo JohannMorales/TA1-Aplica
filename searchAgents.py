@@ -313,7 +313,7 @@ class CornersProblem(search.SearchProblem):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        if(False in state[1]):
+        if False in state[1]:
             return False
         else:
             return True
