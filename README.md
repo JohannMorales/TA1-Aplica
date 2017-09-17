@@ -23,14 +23,14 @@ class Node(object):
 
 ||BFS|DFS|A\*|Algoritmo Genetico|
 |-|-|-|-|-|
-|Nodos expandidos|1|2|||
-|Costo de solucion|1|2|||
+|Nodos expandidos|1921|371|||
+|Costo de solucion|106|221|||
 
 ## Big Corners 
 
-||# Nodos expandidos|Costo de solucion|
-|-|-|-|
-|Depth first search|1|2|
-|Breadth firsst search|1|2|
+||BFS|DFS|A\*|Algoritmo Genetico|
+|-|-|-|-|-|
+|Nodos expandidos|7862|504|||
+|Costo de solucion|162|302|||
 
 Fuente: http://ai.berkeley.edu/search.html
