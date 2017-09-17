@@ -1,22 +1,3 @@
-# TA1-Aplica
-
-## Clases adicionales necesarias
-
-### Node 
-Nodo del arbol de busqueda 
-
-```python
-class Node(object):
-    def __init__(self):
-        self.state=None
-        self.solution=[]
-        self.cost=0
-```
-
-## Entregables
-
-### Estrategias de Busqueda 
-
 # Resultados experimentales 
 
 ## Medium Corners 
