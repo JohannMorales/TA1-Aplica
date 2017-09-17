@@ -22,7 +22,7 @@ class Node(object):
 ## Medium Corners 
 
 ||BFS|DFS|A\*|Algoritmo Genetico|
-|-|-|-|
+|-|-|-|-|-|
 |Nodos expandidos|1|2|||
 |Costo de solucion|1|2|||
 
