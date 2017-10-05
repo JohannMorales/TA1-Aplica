@@ -278,6 +278,8 @@ class CornersProblem(search.SearchProblem):
         Stores the walls, pacman's starting position and corners.
         """
         self.walls = startingGameState.getWalls()
+        #self.startingPosition es una tupla que da las coordenadas donde aparece
+        #el pacman. La tupla es (columna,fila)
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
         self.corners = ((1,1), (1,top), (right, 1), (right, top))
@@ -291,9 +293,9 @@ class CornersProblem(search.SearchProblem):
         corner_state = (False, False, False, False);
         
         #Verifico que no haya empezado en una esquina
-        x = self.startingPosition
-        y = self.startingPosition
-
+        x = self.startingPosition[0]
+        y = self.startingPosition[1]
+        
         if (x,y)==(1,1): corner_state[0]=True
         elif (x,y)==(1,top): corner_state[1]=True
         elif (x,y)==(right,1): corner_state[2]=True
@@ -399,11 +401,52 @@ def cornersHeuristic(state, problem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
+    #((1,1), (1,top), (right, 1), (right, top))
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    """
+    coord = state.state[0]
+    estadoEsquinas = state.state[1]
+    distancias=[]
+    for i in estadoEsquinas:
+        if i == False:
+            dManhattan = abs(corners[i][0]-coord[0])+abs(corners[i][1]-coord[1])
+            distancias.append(dManhattan)
+    if(len(distancias)> 0):
+        distMin = min(distancias)
+    else:
+        distMin = 0
+    return distMin
+    #return 0 # Default to trivial solution
+
+    """
+    #import math
+    coord = state.state[0]
+    estadoEsquinas = state.state[1]
+    distancias=[]
+    for i in estadoEsquinas:
+        if i == False:
+            restaX = abs(corners[i][0]-coord[0])
+            restaX**2
+            #pow(restaX,2)
+            restaY = abs(corners[i][1]-coord[1])
+            #pow(restaY,2)
+            restaY**2
+            suma = restaX + restaY
+            #dist = pow(suma,0.5)
+            dist = suma**0.5
+            distancias.append(dist)
+    
+    if(len(distancias)> 0):
+        distMin = min(distancias)
+    else:
+        distMin = 0
+    
+    return distMin
+    #return 0 # Default to trivial solution
+    
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

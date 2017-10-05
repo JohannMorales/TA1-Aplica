@@ -141,7 +141,6 @@ def breadthFirstSearch(problem):
 
         for action in problem.getSuccessors(node.state):
             child = node.create_child(action[0], action[1], action[2])
-
             # La clase Queue que se da no tiene una funcion para checkear si ya hay un elemento en ella
             if not child.state in explored:
                 if problem.isGoalState(child.state):
@@ -160,11 +159,65 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+def obtenerCantTrue(lista):
+    cont = 0
+    for i in lista:
+        if i == True:
+            cont += 1
+    return cont
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()#
+    node = Node()
+    node.state = problem.getStartState()
+    frontier = []
+    frontier.append((node.state,node.solution,node.cost))
+    explored = set()
+    cantTrue=0
+    cantTrueAux=0
+    while True:
+        if len(frontier) == 0:
+            print "No hay solucion"
+            return []
 
+        #Se escoge el nodo con el valor mas pequenio de distancia
+        node.state = frontier[0][0]
+        node.solution = frontier[0][1]
+        node.cost = frontier[0][2]
+
+        if problem.isGoalState(node.state):
+            return node.solution
+
+        del frontier[0]
+
+        if node.state in explored:
+            continue
+
+        #Si no ha sido explorado entonces lo pone como explorado
+        explored.add(node.state)
+
+        #Insertamos a todos los hijos con su heuristica
+        nodeChild=[]
+        for action in problem.getSuccessors(node.state):
+            child = node.create_child(action[0], action[1], action[2])
+            if not child.state in explored:
+
+                cantTrue=obtenerCantTrue(child.state[1])
+                if cantTrue == (cantTrueAux + 1):
+                    cantTrueAux += 1
+                    nodeChild = []
+                    #print("SE ENCONTRO UNA NUEVA ESQUINA")
+                    #print(child.state[1])
+                    #print(frontier)
+                    frontier = []
+                dManhattan=heuristic(child,problem)
+                nodeChild.append((child.state,child.solution,child.cost,dManhattan+child.cost))
+        if len(nodeChild) >0:
+            #nodeChild=sorted(nodeChild, key=lambda dist:dist[3], reverse=False)
+            frontier.extend(nodeChild)
+            frontier=sorted(frontier, key=lambda dist:dist[3], reverse=False)
 
 # Abbreviations
 bfs = breadthFirstSearch
