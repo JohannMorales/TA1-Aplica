@@ -1,11 +1,29 @@
 ## Comandos
 
+### BFS
 ```sh
 python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
 ```
 
 ```sh
 python pacman.py -l bigCorners -p SearchAgent -a fn=bfs,prob=CornersProblem -z 0.5
+```
+### DFS
+```sh
+python pacman.py -l mediumCorners -p SearchAgent -a fn=dfs,prob=CornersProblem
+```
+
+```sh
+python pacman.py -l bigCorners -p SearchAgent -a fn=dfs,prob=CornersProblem -z 0.5
+```
+
+### A* (Corners Heuristic)
+```sh
+python pacman.py -l mediumCorners -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic -z 0.5
+```
+
+```sh
+python pacman.py -l bigCorners -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic -z 0.5
 ```
 
 ## Resultados experimentales 
