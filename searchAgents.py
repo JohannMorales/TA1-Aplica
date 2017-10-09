@@ -388,6 +388,9 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+def ManhattanDistance(A, B):
+    return abs(A[0]-B[0]) + abs(A[1]-B[1])
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -404,9 +407,37 @@ def cornersHeuristic(state, problem):
     #((1,1), (1,top), (right, 1), (right, top))
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    estadoEsquinas = list(state.state[1])
+    heuristic_cost = 0
+    corners = problem.corners
+    curPos = state.state[0]
 
-    "*** YOUR CODE HERE ***"
-    """
+    while True:
+        distancias = [0, 0, 0, 0]
+        indice = 0
+        min= 999999999
+        minInd = -1
+        for i in estadoEsquinas:
+            if i == False:
+                distancias[indice] = ManhattanDistance(curPos, corners[indice])
+                if distancias[indice] < min:
+                    min = distancias[indice]
+                    minInd = indice
+
+            indice += 1
+
+
+        #No hay ninguna esquina que falta alcanzar
+        if minInd == -1:
+            return heuristic_cost
+
+        #Aumento la distanciaManhattan hasta la esquina mas cercana y me muevo hacia ella
+        #En otras palabras, camino (ignorando las paredes) a la esquina mas cercana
+        heuristic_cost += min
+        curPos = corners[minInd]
+        estadoEsquinas[minInd] = True
+"""
+    #Manhattan 1
     coord = state.state[0]
     estadoEsquinas = state.state[1]
     distancias=[]
@@ -419,9 +450,16 @@ def cornersHeuristic(state, problem):
     else:
         distMin = 0
     return distMin
-    #return 0 # Default to trivial solution
 
-    """
+    "*** YOUR CODE HERE ***"
+"""
+
+
+"""
+
+
+    #return 0 # Default to trivial solution
+    #Euclideana
     #import math
     coord = state.state[0]
     estadoEsquinas = state.state[1]
@@ -447,7 +485,7 @@ def cornersHeuristic(state, problem):
     return distMin
     #return 0 # Default to trivial solution
     
-
+"""
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
