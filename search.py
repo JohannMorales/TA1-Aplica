@@ -74,23 +74,34 @@ def tinyMazeSearch(problem):
     return [s, s, w, s, w, w, s, w]
 
 class Node(object):
-    def __init__(self):
-        self.state=None
+    def __init__(self, state=None, path_cost=0):
+        self.state=state
         self.solution=[]
         self.cost=0
 
     def create_child(self, state, addSolution, addCost):
-        child = Node()
+        child = Node(state=None, path_cost = 0)
         child.state = tuple(state)
         child.solution = list(self.solution)
         child.solution.append(addSolution)
         child.cost = self.cost + addCost
         return child
 
+def childNode(parent, action):
+    result = action[0]
+    step = action[1]
+    step_cost = action[2]
+    
+    child = Node()
+    child.state = tuple(result)
+    child.solution = list(parent.solution)
+    child.solution.append(step)
+    child.cost = parent.cost + step_cost
+
+    return child
    
 def depthFirstSearch(problem):
-    node = Node()
-    node.state=problem.getStartState()
+    node = Node(state=problem.getStartState(), path_cost=0)
     frontier=util.Stack()
     frontier.push(node)
     explored=set()
@@ -98,11 +109,10 @@ def depthFirstSearch(problem):
     while True:
 
         if frontier.isEmpty():
-            print "No hay solucion"
-            return []
+            return [] #failure 
 
         node = frontier.pop()
-
+        
         if node.state in explored:
             continue
             
@@ -112,36 +122,35 @@ def depthFirstSearch(problem):
         explored.add(node.state)
 
         for action in problem.getSuccessors(node.state):
-            child = node.create_child(action[0], action[1], action[2])
-
-            if not child.state in explored:
+            child = childNode(node, action)
+            if not child.state in explored and not child.state in frontier.list:
                 frontier.push(child)
 
+
 def breadthFirstSearch(problem):
-    node = Node()
-    node.state=problem.getStartState()
+    node = Node(state=problem.getStartState(), path_cost=0)
     frontier=util.Queue()
     frontier.push(node)
     explored=set()
+    
     while True:
 
         if frontier.isEmpty():
-            print "No hay solucion"
-            return []
+            return [] # failure
 
         node=frontier.pop()
-
-        # Debido a que no se puede checkear la frontera al momento de insertar el nodo
-        # se debe checkear en este punto si el estado del nodo sacado ya ha sido 
-        # explorado o no 
+        
+        #Limpio a los repetidos en el frontier que no fueron limpiados abajo
+        #debido a que Queue no tiene una funcion que permita validar que hay
+        #un elemento en ella en O(1)
         if node.state in explored:
            continue
 
         explored.add(node.state)
 
         for action in problem.getSuccessors(node.state):
-            child = node.create_child(action[0], action[1], action[2])
-            # La clase Queue que se da no tiene una funcion para checkear si ya hay un elemento en ella
+            child = childNode(node, action)
+
             if not child.state in explored:
                 if problem.isGoalState(child.state):
                     return child.solution
@@ -201,7 +210,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         #Insertamos a todos los hijos con su heuristica
         nodeChild=[]
         for action in problem.getSuccessors(node.state):
-            child = node.create_child(action[0], action[1], action[2])
+            child = childNode(node, action)
             if not child.state in explored:
 
                 cantTrue=obtenerCantTrue(child.state[1])
