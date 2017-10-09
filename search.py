@@ -156,44 +156,41 @@ def breadthFirstSearch(problem):
                     return child.solution
                 frontier.push(child)
 
-def limitedDepthSearch(problem, depth):
+def depthIterative(problem):
     node = Node(state=problem.getStartState(), path_cost=0)
-    return recursiveDLS(node, problem, depth)
-    
-def recursiveDLS(node, problem, depht):
-    if problem.isGoalState(node.state):
-        return node.solution
-    elif depht == 0:
-        #print "Solucion no encontrada"
-        return ['x','x','x','x']
-    else:
-        errorOcurrido = False
-        #print node.state
-        print "HOLA MUNDO"
-        succesors = problem.getSuccessors(node.state)
-        print problem.getSuccessors(node.state)
+    frontier=util.Stack()
+    frontier.push(node)
+    explored=set()
+    num = 0
+    while True:
+        #if frontier.isEmpty() or (num > limit):
+        if frontier.isEmpty():
+			print "Si no hay solucion, la huelga continua :v"
+			return [] #failure 
 
-	print "======================="     
-	   
-	for action in problem.getSuccessors(node.state):
+        node = frontier.pop()
+        num = num - 1
+        
+        if node.state in explored:
+            continue
+            
+        if problem.isGoalState(node.state):
+            return node.solution
+
+        explored.add(node.state)
+        for action in problem.getSuccessors(node.state):
             child = childNode(node, action)
-            print "Calling, depth =" + depth-1
-            result = recursiveDLS(child, problem, depht-1)
-            if result == ['x','x','x','x']:
-                errorOcurrido = True
-            elif result != []:
-                return result
-        if errorOcurrido:
-            return ['x','x','x','x']
-        else:
-            return []
+            if not child.state in explored and not child.state in frontier.list:
+                frontier.push(child)
+                num = num + 1
+        print num
 
-#def iterativeDeepeningSearch(problem, i, j):
-def iterativeDeepeningSearch(problem):
-    for depth in range(1,10):
-        result = limitedDepthSearch(problem, depth)
-        if (result != ['x','x','x','x']):
-            return result
+def iterativeDFS(problem):
+	limite = 10000
+	depthIterative(problem)
+	print limite
+	
+	
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
@@ -272,4 +269,5 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
-ite = iterativeDeepeningSearch
+dep = depthIterative
+ite = iterativeDFS
