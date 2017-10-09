@@ -26,6 +26,15 @@ python pacman.py -l mediumCorners -p SearchAgent -a fn=aStarSearch,prob=CornersP
 python pacman.py -l bigCorners -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic -z 0.5
 ```
 
+### Profundidad iterativa* (Corners Heuristic)
+```sh
+python pacman.py -l mediumCorners -p SearchAgent -a fn=ite,prob=CornersProblem
+```
+
+```sh
+python pacman.py -l bigCorners -p SearchAgent -a fn=ite,prob=CornersProblem -z 0.5
+```
+
 ## Resultados experimentales 
 
 ### Medium Corners 
