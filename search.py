@@ -156,6 +156,45 @@ def breadthFirstSearch(problem):
                     return child.solution
                 frontier.push(child)
 
+def limitedDepthSearch(problem, depth):
+    node = Node(state=problem.getStartState(), path_cost=0)
+    return recursiveDLS(node, problem, depth)
+    
+def recursiveDLS(node, problem, depht):
+    if problem.isGoalState(node.state):
+        return node.solution
+    elif depht == 0:
+        #print "Solucion no encontrada"
+        return ['x','x','x','x']
+    else:
+        errorOcurrido = False
+        #print node.state
+        print "HOLA MUNDO"
+        succesors = problem.getSuccessors(node.state)
+        print problem.getSuccessors(node.state)
+
+	print "======================="     
+	   
+	for action in problem.getSuccessors(node.state):
+            child = childNode(node, action)
+            print "Calling, depth =" + depth-1
+            result = recursiveDLS(child, problem, depht-1)
+            if result == ['x','x','x','x']:
+                errorOcurrido = True
+            elif result != []:
+                return result
+        if errorOcurrido:
+            return ['x','x','x','x']
+        else:
+            return []
+
+#def iterativeDeepeningSearch(problem, i, j):
+def iterativeDeepeningSearch(problem):
+    for depth in range(1,10):
+        result = limitedDepthSearch(problem, depth)
+        if (result != ['x','x','x','x']):
+            return result
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
@@ -233,3 +272,4 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+ite = iterativeDeepeningSearch
