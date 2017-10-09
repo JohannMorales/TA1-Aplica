@@ -156,15 +156,15 @@ def breadthFirstSearch(problem):
                     return child.solution
                 frontier.push(child)
 
-def depthIterative(problem):
+def depthIterative(problem,limit):
     node = Node(state=problem.getStartState(), path_cost=0)
     frontier=util.Stack()
     frontier.push(node)
     explored=set()
     num = 0
     while True:
-        #if frontier.isEmpty() or (num > limit):
-        if frontier.isEmpty():
+        if frontier.isEmpty() or (num > limit):
+        #if frontier.isEmpty():
 			print "Si no hay solucion, la huelga continua :v"
 			return [] #failure 
 
@@ -183,14 +183,6 @@ def depthIterative(problem):
             if not child.state in explored and not child.state in frontier.list:
                 frontier.push(child)
                 num = num + 1
-        print num
-
-def iterativeDFS(problem):
-	limite = 10000
-	depthIterative(problem)
-	print limite
-	
-	
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
