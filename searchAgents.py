@@ -445,7 +445,7 @@ def cornersHeuristic(state, problem):
     corners = problem.corners
     cornersState = state.state[1]
 
-    return ManhattanPath(pacmanPosition, corners, cornersState)
+    return ManhattanPathDistance(pacmanPosition, corners, cornersState)
     #return MinEcludianDistance(pacmanPosition, corners, cornersState)
 
 class AStarCornersAgent(SearchAgent):
