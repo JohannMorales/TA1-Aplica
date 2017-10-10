@@ -399,7 +399,7 @@ def getUnvisited(cornersPosition, cornersState):
         i += 1
     return result
 
-def ManhattanPath(pacmanPosition, cornersPosition, cornersState):
+def ManhattanPathDistance(pacmanPosition, cornersPosition, cornersState):
     value = 0
     current = pacmanPosition
     unvisitedCorners = getUnvisited(cornersPosition, cornersState)
