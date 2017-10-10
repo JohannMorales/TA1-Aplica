@@ -46,8 +46,8 @@ python pacman.py -l bigCorners -p SearchAgent -a fn=ite,prob=CornersProblem -z 0
 
 ### Big Corners 
 
-||BFS|DFS|A\*(MED)|A* (MPD)|Algoritmo Genetico|
-|-|-:|-:|-:|-:|
+||BFS|DFS|A *(MED)|A* (MPD)|Algoritmo Genetico|
+|-|-:|-:|-:|-:|-:|
 |Nodos expandidos|7862|504|1226|||
 |Costo de solucion|162|302|162|||
 
