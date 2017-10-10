@@ -262,4 +262,4 @@ dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
 dep = depthIterative
-ite = iterativeDFS
+#ite = iterativeDFS

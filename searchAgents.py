@@ -33,6 +33,7 @@ description for details.
 
 Good luck and happy searching!
 """
+from _testcapi import INT_MAX
 
 from game import Directions
 from game import Agent
@@ -387,105 +388,66 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]: return 999999
         return len(actions)
 
-
 def ManhattanDistance(A, B):
     return abs(A[0]-B[0]) + abs(A[1]-B[1])
 
-def cornersHeuristic(state, problem):
-    """
-    A heuristic for the CornersProblem that you defined.
+def getUnvisited(cornersPosition, cornersState):
+    result = set()
+    i = 0
+    for corner in cornersPosition:
+        if cornersState[i] == False: result.add(corner)
+        i += 1
+    return result
 
-      state:   The current search state
-               (a data structure you chose in your search problem)
-
-      problem: The CornersProblem instance for this layout.
-
-    This function should always return a number that is a lower bound on the
-    shortest path from the state to a goal of the problem; i.e.  it should be
-    admissible (as well as consistent).
-    """
-    #((1,1), (1,top), (right, 1), (right, top))
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-    estadoEsquinas = list(state.state[1])
-    heuristic_cost = 0
-    corners = problem.corners
-    curPos = state.state[0]
+def ManhattanPath(pacmanPosition, cornersPosition, cornersState):
+    value = 0
+    current = pacmanPosition
+    unvisitedCorners = getUnvisited(cornersPosition, cornersState)
 
     while True:
-        distancias = [0, 0, 0, 0]
-        indice = 0
-        min= 999999999
-        minInd = -1
-        for i in estadoEsquinas:
-            if i == False:
-                distancias[indice] = ManhattanDistance(curPos, corners[indice])
-                if distancias[indice] < min:
-                    min = distancias[indice]
-                    minInd = indice
+        if(len(unvisitedCorners) == 0): break
+        min = INT_MAX
+        for corner in unvisitedCorners:
+            if(ManhattanDistance(current, corner) < min):
+                min = ManhattanDistance(current, corner)
+                minCorner = corner
 
-            indice += 1
+        current = minCorner
+        unvisitedCorners.remove(minCorner)
+        value += min
 
+    return value
 
-        #No hay ninguna esquina que falta alcanzar
-        if minInd == -1:
-            return heuristic_cost
-
-        #Aumento la distanciaManhattan hasta la esquina mas cercana y me muevo hacia ella
-        #En otras palabras, camino (ignorando las paredes) a la esquina mas cercana
-        heuristic_cost += min
-        curPos = corners[minInd]
-        estadoEsquinas[minInd] = True
-"""
-    #Manhattan 1
-    coord = state.state[0]
-    estadoEsquinas = state.state[1]
-    distancias=[]
+def MinEcludianDistance(posicionPacman, esquinas, estadoEsquinas):
+    distancias = []
     for i in estadoEsquinas:
         if i == False:
-            dManhattan = abs(corners[i][0]-coord[0])+abs(corners[i][1]-coord[1])
-            distancias.append(dManhattan)
-    if(len(distancias)> 0):
-        distMin = min(distancias)
-    else:
-        distMin = 0
-    return distMin
+            restaX = abs(esquinas[i][0] - posicionPacman[0])
+            restaX ** 2
 
-    "*** YOUR CODE HERE ***"
-"""
+            restaY = abs(esquinas[i][1] - posicionPacman[1])
+            restaY ** 2
 
-
-"""
-
-
-    #return 0 # Default to trivial solution
-    #Euclideana
-    #import math
-    coord = state.state[0]
-    estadoEsquinas = state.state[1]
-    distancias=[]
-    for i in estadoEsquinas:
-        if i == False:
-            restaX = abs(corners[i][0]-coord[0])
-            restaX**2
-            #pow(restaX,2)
-            restaY = abs(corners[i][1]-coord[1])
-            #pow(restaY,2)
-            restaY**2
             suma = restaX + restaY
-            #dist = pow(suma,0.5)
-            dist = suma**0.5
+
+            dist = suma ** 0.5
             distancias.append(dist)
-    
-    if(len(distancias)> 0):
+
+    if (len(distancias) > 0):
         distMin = min(distancias)
     else:
         distMin = 0
-    
+
     return distMin
-    #return 0 # Default to trivial solution
-    
-"""
+
+def cornersHeuristic(state, problem):
+    pacmanPosition = state.state[0]
+    corners = problem.corners
+    cornersState = state.state[1]
+
+    return ManhattanPath(pacmanPosition, corners, cornersState)
+    #return MinEcludianDistance(pacmanPosition, corners, cornersState)
+
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
