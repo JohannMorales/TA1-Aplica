@@ -17,7 +17,7 @@ python pacman.py -l mediumCorners -p SearchAgent -a fn=dfs,prob=CornersProblem
 python pacman.py -l bigCorners -p SearchAgent -a fn=dfs,prob=CornersProblem -z 0.5
 ```
 
-### A* (Corners Heuristic)
+### A* (Manhattan Path Distance)
 ```sh
 python pacman.py -l mediumCorners -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic -z 0.5
 ```
@@ -26,7 +26,7 @@ python pacman.py -l mediumCorners -p SearchAgent -a fn=aStarSearch,prob=CornersP
 python pacman.py -l bigCorners -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic -z 0.5
 ```
 
-### Profundidad iterativa
+### IDS (Profundidad iterativa)
 ```sh
 python pacman.py -l tinyCorners -p SearchAgent -a fn=ite,prob=CornersProblem
 ```
@@ -42,14 +42,14 @@ python pacman.py -l bigCorners -p SearchAgent -a fn=ite,prob=CornersProblem -z 0
 
 ### Medium Corners 
 
-||BFS|DFS|A\*(MPD)|IterativeDeepSearch|
+||BFS|DFS|A\*(MPD)|IDS|
 |-|-:|-:|-:|-:|
 |Nodos expandidos|1921|249|335|95383|
 |Costo de solucion|106|221|106|136|
 
 ### Big Corners 
 
-||BFS|DFS|A *(MPD)|Algoritmo Genetico|
+||BFS|DFS|A*(MPD)|IDS|
 |-|-:|-:|-:|-:|
 |Nodos expandidos|7862|504|358|472008|
 |Costo de solucion|162|302|162|276|
