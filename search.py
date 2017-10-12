@@ -73,19 +73,13 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
+######## TAREA ACADEMICA 1: APLICACIONES DE CIENCAS DE LA COMPUTACION ##########
+
 class Node(object):
     def __init__(self, state=None, path_cost=0):
         self.state=state
         self.solution=[]
         self.cost=0
-
-    def create_child(self, state, addSolution, addCost):
-        child = Node(state=None, path_cost = 0)
-        child.state = tuple(state)
-        child.solution = list(self.solution)
-        child.solution.append(addSolution)
-        child.cost = self.cost + addCost
-        return child
 
 def childNode(parent, action):
     result = action[0]
@@ -100,6 +94,8 @@ def childNode(parent, action):
 
     return child
    
+   
+################ INICIO:  DEPTH FIRST SEARCH ################
 def depthFirstSearch(problem):
     node = Node(state=problem.getStartState(), path_cost=0)
     frontier=util.Stack()
@@ -127,6 +123,8 @@ def depthFirstSearch(problem):
                 frontier.push(child)
 
 
+
+################ INICIO:  BREADTH FIRST SEARCH ################
 def breadthFirstSearch(problem):
     node = Node(state=problem.getStartState(), path_cost=0)
     frontier=util.Queue()
@@ -156,45 +154,71 @@ def breadthFirstSearch(problem):
                     return child.solution
                 frontier.push(child)
 
-def depthIterative(problem,limit):
-    node = Node(state=problem.getStartState(), path_cost=0)
-    frontier=util.Stack()
-    frontier.push(node)
-    explored=set()
-    num = 0
-    while True:
-        if frontier.isEmpty() or (num > limit):
-        #if frontier.isEmpty():
-			print "Si no hay solucion, la huelga continua :v"
-			return [] #failure 
 
-        node = frontier.pop()
-        num = num - 1
-        
-        if node.state in explored:
-            continue
-            
-        if problem.isGoalState(node.state):
-            return node.solution
+################ INICIO:  ITERATIVE DEPTH SEARCH ################
 
+## Este codigo corresponde a la version que comparte la lista de anidados 
+## entre todas las ramas recursivas ya que es el unico que se puede ejecutar
+## para todas tinyCorners, mediumCorners y bigCorners sin que se tarde 
+## una cantidad de tiempo excesiva
+
+## Si se desean probar las otras versiones, estan en el archivo:
+## 		VersionesProfundidadIterativa.py
+## Reemplazar el codigo de Iterative Depth Search (lineas 171 a 206) en este 
+## archivo (search.py)  por el de la version que se desee probar.
+## Se recomienda probar las demas versiones con tinyCorners
+## tildes omitidas
+
+def recursiveDLS(node, problem, depth, explored):
+    if problem.isGoalState(node.state):
+        return node.solution
+    elif depth == 0:
+        return [1]
+    else:
+        cutoff_ocurred=False
         explored.add(node.state)
         for action in problem.getSuccessors(node.state):
             child = childNode(node, action)
-            if not child.state in explored and not child.state in frontier.list:
-                frontier.push(child)
-                num = num + 1
+            if not(child.state in explored):
+                result = recursiveDLS(child, problem, depth-1, explored)
+                if result == [1]:
+                    cutoff_ocurred = True
+                elif result != [0]:
+                    return result
+        if cutoff_ocurred:
+            return [1]
+        else:
+            return [0]
 
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+def limitedDepthSearch(problem, depth):
+    node = Node(state=problem.getStartState(), path_cost=0)
+    explored=set()
+    return recursiveDLS(node, problem, depth, explored)
 
+def iterativeDFS(problem):
+    depth=0
+    while True:
+        result = limitedDepthSearch(problem, depth)
+        #cutoff=[1]
+        #failure=[0]
+        if result!= [1]:
+            return result
+        depth+=1
+
+        
+
+
+################ INICIO: A* SEARCH ################
+
+## Por defecto esta con la heuristica mas eficiente ManhattanPath, se puede 
+## cambiar por la otra heuristica en SearchAgents.py
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def obtenerCantTrue(lista):
     cont = 0
@@ -260,6 +284,4 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
-ucs = uniformCostSearch
-dep = depthIterative
-#ite = iterativeDFS
+ite = iterativeDFS

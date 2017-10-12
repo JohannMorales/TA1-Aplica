@@ -267,6 +267,8 @@ def euclideanHeuristic(position, problem, info={}):
 # This portion is incomplete.  Time to write code!  #
 #####################################################
 
+
+############## TAREA ACADEMICA 1 : APLICACIONES DE CIENCAS DE LA COMPUTACION ###
 class CornersProblem(search.SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
@@ -387,7 +389,9 @@ class CornersProblem(search.SearchProblem):
             x, y = int(x + dx), int(y + dy)
             if self.walls[x][y]: return 999999
         return len(actions)
-
+        
+        
+######## INICIO HEURISTICAS #####################3
 def ManhattanDistance(A, B):
     return abs(A[0]-B[0]) + abs(A[1]-B[1])
 
@@ -440,6 +444,9 @@ def MinEcludianDistance(posicionPacman, esquinas, estadoEsquinas):
 
     return distMin
 
+
+######### ALTERNAR ENTRE LOS RETURN PARA ALTERNAR ENTRE LAS HEURISTICAS PROPUESTAS
+
 def cornersHeuristic(state, problem):
     pacmanPosition = state.state[0]
     corners = problem.corners
@@ -448,6 +455,8 @@ def cornersHeuristic(state, problem):
     return ManhattanPathDistance(pacmanPosition, corners, cornersState)
     #return MinEcludianDistance(pacmanPosition, corners, cornersState)
 
+
+### FIN TAREA ACADEMICA 1 APLICA 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
