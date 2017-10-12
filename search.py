@@ -157,9 +157,9 @@ def breadthFirstSearch(problem):
 
 ################ INICIO:  ITERATIVE DEPTH SEARCH ################
 
-## Este codigo corresponde a la version que comparte la lista de anidados 
+## Este codigo corresponde a la version que comparte la lista de explorados 
 ## entre todas las ramas recursivas ya que es el unico que se puede ejecutar
-## para todas tinyCorners, mediumCorners y bigCorners sin que se tarde 
+## para los mapas: tinyCorners, mediumCorners y bigCorners sin que se tarde 
 ## una cantidad de tiempo excesiva
 
 ## Si se desean probar las otras versiones, estan en el archivo:
