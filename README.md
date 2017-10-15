@@ -54,4 +54,5 @@ python pacman.py -l bigCorners -p SearchAgent -a fn=ite,prob=CornersProblem -z 0
 |Nodos expandidos|7862|504|358|472008|
 |Costo de solucion|162|302|162|276|
 
-Fuente: http://ai.berkeley.edu/search.html
+## Fuente
+http://ai.berkeley.edu/search.html
